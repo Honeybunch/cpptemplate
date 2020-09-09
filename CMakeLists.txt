@@ -30,14 +30,13 @@ if(MSVC)
     string(REPLACE "/GR" "" CMAKE_C_FLAGS ${CMAKE_C_FLAGS})
 endif()
 
-# Setup clang-tidy checks
-set(clang_tidy_checks "*,-abseil-*,-boost-use-to-string,-cert-*,-bugprone-argument-comment,-cppcoreguidelines-*,cppcoreguidelines-pro-type-union-access,-darwin-*,-fuchsia-*,fuchsia-multiple-inheritance,fuchsia-statically-constructed-objects,fuchsia-trailing-return,fuchsia-virtual-inheritance,-google-*,google-runtime-int,google-runtime-operator,google-runtime-reference,-hicpp-*,hicpp-multiway-paths-covered,-llvm-*,llvm-namepsace-comment,-misc-uniqueptr-reset-release,-modernize-*,modenize-concat-nexted-namepsaces,modernize-use-emplace,modernize-use-override,modernize-use-using,-mpi-*m-open-mp*,-portability-simd-intrinsics,-readability-*,-zircon-temporary-objects,-fuchsia-statically-constructed-objects,-cppcoreguidelines-pro-type-union-access,-clang-analyzer-security.insecureAPI.*")
-set(clang_tidy_args clang-tidy;-header-filter=.*,-*vulkan*,-*SDL*;-checks=${clang_tidy_checks};-warnings-as-errors=*;)
-
 # A host's clang-tidy and CMake doesn't seem to play nicely with Android builds
+# NOTE: Some platforms install clang-tidy as clang-tidy-X (where X is the major version).
+# If clang-tidy isn't found on your machine, configure with:
+# -DCMAKE_C_CLANG_TIDY=clang-tidy-X -DCMAKE_CXX_CLANG_TIDY=clang-tidy-X 
 if(NOT ANDROID)
-    set(CMAKE_C_CLANG_TIDY ${clang_tidy_args})
-    set(CMAKE_CXX_CLANG_TIDY ${clang_tidy_args})
+    set(CMAKE_C_CLANG_TIDY clang-tidy)
+    set(CMAKE_CXX_CLANG_TIDY clang-tidy)
 endif()
 
 # Decide which OS were on and what needs to be done per-os

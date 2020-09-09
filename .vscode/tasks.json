@@ -1,0 +1,165 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Configure Windows Ninja LLVM",
+            "type": "shell",
+            "command": "cmake -G\\\"Ninja Multi-Config\\\" -B build_windows_ninja_llvm -DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+            "problemMatcher": []
+        },
+        {
+            "label": "Build Windows Ninja LLVM Debug",
+            "type": "shell",
+            "command": "cmake --build build_windows_ninja_llvm --config Debug --target install",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Build Windows Ninja LLVM RelWithDebInfo",
+            "type": "shell",
+            "command": "cmake --build build_windows_ninja_llvm --config RelWithDebInfo --target install",
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "Build Windows Ninja LLVM Release",
+            "type": "shell",
+            "command": "cmake --build build_windows_ninja_llvm --config Release --target install",
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "Build Windows Ninja LLVM",
+            "dependsOn": [
+                "Build Windows Ninja LLVM Debug",
+                "Build Windows Ninja LLVM RelWithDebInfo",
+                "Build Windows Ninja LLVM Release"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Configure Windows Ninja MSVC",
+            "command": "cmd",
+            "type": "process",
+            "args": [
+                "/C",
+                "%vcvarsall%",
+                "&&",
+                "cmake",
+                "-G",
+                "Ninja Multi-Config",
+                "-B",
+                "build_windows_ninja_msvc"
+            ],
+            "problemMatcher": [],
+            "options": {
+                "env": {
+                    "vcvarsall": "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat\" x64"
+                }
+            }
+        },
+        {
+            "label": "Build Windows Ninja MSVC Debug",
+            "type": "process",
+            "command": "cmd",
+            "args": [
+                "/C %vcvarsall% && cmake --build build_windows_ninja_msvc --config Debug --target install"
+            ],
+            "problemMatcher": [
+                {
+                    "fileLocation": [
+                        "relative",
+                        "${workspaceRoot}/build_windows_ninja"
+                    ],
+                    "base": "$msCompile"
+                }
+            ],
+            "options": {
+                "env": {
+                    "vcvarsall": "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\Common7\\Tools\\VsDevCmd.bat\" -arch=amd64"
+                }
+            },
+            "group": "build"
+        },
+        {
+            "label": "Build Windows Ninja MSVC RelWithDebInfo",
+            "type": "process",
+            "command": "cmd",
+            "args": [
+                "/C %vcvarsall% && cmake --build build_windows_ninja_msvc --config RelWithDebInfo --target install"
+            ],
+            "problemMatcher": [
+                {
+                    "fileLocation": [
+                        "relative",
+                        "${workspaceRoot}/build_windows_ninja"
+                    ],
+                    "base": "$msCompile"
+                }
+            ],
+            "options": {
+                "env": {
+                    "vcvarsall": "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\Common7\\Tools\\VsDevCmd.bat\" -arch=amd64"
+                }
+            },
+            "group": "build"
+        },
+        {
+            "label": "Build Windows Ninja MSVC Release",
+            "type": "process",
+            "command": "cmd",
+            "args": [
+                "/C %vcvarsall% && cmake --build build_windows_ninja_msvc --config Release --target install"
+            ],
+            "problemMatcher": [
+                {
+                    "fileLocation": [
+                        "relative",
+                        "${workspaceRoot}/build_windows_ninja"
+                    ],
+                    "base": "$msCompile"
+                }
+            ],
+            "options": {
+                "env": {
+                    "vcvarsall": "\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\Common7\\Tools\\VsDevCmd.bat\" -arch=amd64"
+                }
+            },
+            "group": "build"
+        },
+        {
+            "label": "Build Windows Ninja MSVC",
+            "dependsOn": [
+                "Build Windows Ninja MSVC Debug",
+                "Build Windows Ninja MSVC RelWithDebInfo",
+                "Build Windows Ninja MSVC Release"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Configure Windows Ninja",
+            "dependsOn": [
+                "Configure Windows Ninja LLVM",
+                "Configure Windows Ninja MSVC"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Build Windows Ninja",
+            "dependsOn": [
+                "Build Windows Ninja MSVC Debug",
+                "Build Windows Ninja MSVC RelWithDebInfo",
+                "Build Windows Ninja MSVC Release",
+                "Build Windows Ninja LLVM Debug",
+                "Build Windows Ninja LLVM RelWithDebInfo",
+                "Build Windows Ninja LLVM Release"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}
